@@ -111,7 +111,15 @@ def submit_rating():
             writer.writerow([timestamp, rating])
         return jsonify({'message': 'Thanks for your feedback!'})
     return jsonify({'message': 'Invalid rating.'})
-
+# --- New route to download feedback CSV ---
+@app.route('/download-feedback', methods=['GET'])
+def download_feedback():
+    feedback_file = 'model_feedback.csv'
+    if os.path.exists(feedback_file):
+        return send_file(feedback_file, as_attachment=True)
+    else:
+        flash("No feedback file found.")
+        return redirect('/')
 # --- Run ---
 if __name__ == '__main__':
     import os
